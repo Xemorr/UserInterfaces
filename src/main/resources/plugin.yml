@@ -3,4 +3,5 @@ version: ${project.version}
 main: me.xemor.userinterface.UserInterface
 api-version: 1.17
 authors: [ Xemor_ ]
-description: Allows you to add Bedrock-Java cross compatible GUIs 
+depend: [floodgate]
+description: Allows you to add Bedrock-Java cross compatible GUIs

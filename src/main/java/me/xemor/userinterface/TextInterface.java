@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.geysermc.cumulus.CustomForm;
 import org.geysermc.floodgate.api.FloodgateApi;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.function.Consumer;
 
 public class TextInterface {
@@ -28,7 +28,7 @@ public class TextInterface {
             FloodgateApi.getInstance().sendForm(player.getUniqueId(), form);
         }
         else {
-            SignMenuFactory.Menu menu = factory.newMenu(Collections.singletonList(title));
+            SignMenuFactory.Menu menu = factory.newMenu(Arrays.asList(title, "", "", ""));
             menu.reopenIfFail(true).response((ignored, output) -> {response.accept(output[1]); return true;});
         }
     }
