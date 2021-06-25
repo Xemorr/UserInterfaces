@@ -12,24 +12,27 @@ public class TextInterface {
 
     private String title;
     private String placeholder;
-    private SignMenuFactory factory = new SignMenuFactory(UserInterface.getInstance());
+    private final SignMenuFactory factory = new SignMenuFactory(UserInterface.getInstance());
 
-    public void title(String title) {
+    public TextInterface title(String title) {
         this.title = title;
+        return this;
     }
 
-    public void placeholder(String placeholder) {
+    public TextInterface placeholder(String placeholder) {
         this.placeholder = placeholder;
+        return this;
     }
 
     public void getInput(Player player, Consumer<String> response) {
         if (FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId())) {
-            CustomForm form = CustomForm.builder().title(title).input("Input", placeholder).responseHandler(response).build();
+            CustomForm form = CustomForm.builder().title(title).input("Input", placeholder).responseHandler((string) -> response.accept(string.substring(2, string.length() - 3))).build();
             FloodgateApi.getInstance().sendForm(player.getUniqueId(), form);
         }
         else {
-            SignMenuFactory.Menu menu = factory.newMenu(Arrays.asList(title, "", "", ""));
-            menu.reopenIfFail(true).response((ignored, output) -> {response.accept(output[1]); return true;});
+            SignMenuFactory.Menu menu = factory.newMenu(Arrays.asList("", "^^^^^^^^^^^", title, ""));
+            menu.reopenIfFail(true).response((ignored, output) -> {response.accept(output[0]); return true;});
+            menu.open(player);
         }
     }
 
