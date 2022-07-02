@@ -8,12 +8,12 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
-import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 public class InventoryInteractions<T> implements InventoryHolder {
 
+    private Consumer<Player> closeInteraction;
     private Map<Predicate<ItemStack>, Interaction> map = new HashMap<>();
     private Inventory inventory;
     private T data;
@@ -32,6 +32,14 @@ public class InventoryInteractions<T> implements InventoryHolder {
 
     public void setInventory(Inventory inventory) {
         this.inventory = inventory;
+    }
+
+    public void addCloseInteraction(Consumer<Player> consumer) {
+        closeInteraction = consumer;
+    }
+
+    public void closed(Player player) {
+        closeInteraction.accept(player);
     }
 
     public void addInteraction(Predicate<ItemStack> predicate, Interaction interaction) {

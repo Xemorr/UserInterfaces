@@ -20,14 +20,13 @@ public class ChestInterface<T> {
 
     private final Inventory inventory;
 
-    public ChestInterface(String name, String[] layout, Map<Character, ItemStack> key, T data) {
+    public ChestInterface(String name, int rows, T data) {
         InventoryInteractions<T> inventoryInterface = new InventoryInteractions<>(data);
-        inventory = Bukkit.createInventory(inventoryInterface, layout.length * 9, name);
-        recalculateInventoryContents(layout, key, inventoryInterface);
+        inventory = Bukkit.createInventory(inventoryInterface, rows * 9, name);
+        inventoryInterface.setInventory(inventory);
     }
 
-    public void recalculateInventoryContents(String[] layout, Map<Character, ItemStack> key, InventoryInteractions<T> inventoryInterface) {
-        inventoryInterface.setInventory(inventory);
+    public void calculateInventoryContents(String[] layout, Map<Character, ItemStack> key) {
         for (int i = 0; i < layout.length * 9; i++) {
             char character = layout[i / 9].charAt(i % 9);
             ItemStack itemStack = key.getOrDefault(character, new ItemStack(Material.AIR));
