@@ -6,7 +6,7 @@
 
     <groupId>me.xemor</groupId>
     <artifactId>UserInterface</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.3.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>UserInterface</name>
@@ -15,7 +15,7 @@
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <dir>E:\Holder\1.17 Test Server\plugins</dir>
+        <dir>E:\Holder\1.17 Test Server\plugins\update</dir>
     </properties>
 
     <build>
@@ -90,7 +90,7 @@
         <dependency>
             <groupId>com.comphenix.protocol</groupId>
             <artifactId>ProtocolLib</artifactId>
-            <version>4.5.0</version>
+            <version>4.8.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

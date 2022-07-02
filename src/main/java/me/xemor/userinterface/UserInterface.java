@@ -10,6 +10,8 @@ public final class UserInterface extends JavaPlugin {
     public void onEnable() {
         // Plugin startup logic
         userInterface = this;
+        ChestHandler chestHandler = new ChestHandler();
+        this.getServer().getPluginManager().registerEvents(chestHandler, this);
     }
 
     @Override
