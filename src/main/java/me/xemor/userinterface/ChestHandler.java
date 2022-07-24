@@ -15,7 +15,8 @@ public class ChestHandler implements Listener {
     public void onClick(InventoryClickEvent e) {
         ItemStack clickedItem = e.getCurrentItem();
         Inventory inventory = e.getInventory();
-        if (inventory.getHolder() instanceof InventoryInteractions) {
+        if (e.getClickedInventory() == null) return;
+        if (e.getClickedInventory().getHolder() instanceof InventoryInteractions) {
             InventoryInteractions<?> inventoryInterface = (InventoryInteractions<?>) inventory.getHolder();
             if (e.getWhoClicked() instanceof Player) {
                 inventoryInterface.interact(clickedItem, (Player) e.getWhoClicked(), e.getClick());
@@ -29,8 +30,10 @@ public class ChestHandler implements Listener {
         Inventory inventory = e.getInventory();
         if (inventory.getHolder() instanceof InventoryInteractions) {
             InventoryInteractions<?> inventoryInteractions = (InventoryInteractions<?>) inventory.getHolder();
-            if (e.getPlayer() instanceof Player) {
-                inventoryInteractions.closed((Player) e.getPlayer());
+            if (inventoryInteractions.isClosed()) {
+                if (e.getPlayer() instanceof Player) {
+                    inventoryInteractions.closed((Player) e.getPlayer());
+                }
             }
         }
     }

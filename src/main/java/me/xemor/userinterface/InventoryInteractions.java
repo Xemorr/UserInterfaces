@@ -16,6 +16,7 @@ public class InventoryInteractions<T> implements InventoryHolder {
     private Consumer<Player> closeInteraction;
     private Map<Predicate<ItemStack>, Interaction> map = new HashMap<>();
     private Inventory inventory;
+    private boolean isClosed;
     private T data;
 
     public InventoryInteractions(T data) {
@@ -39,6 +40,7 @@ public class InventoryInteractions<T> implements InventoryHolder {
     }
 
     public void closed(Player player) {
+        isClosed = true;
         closeInteraction.accept(player);
     }
 
@@ -68,5 +70,9 @@ public class InventoryInteractions<T> implements InventoryHolder {
 
     public interface Interaction {
         void run(Player player, ItemStack clicked, ClickType clickType);
+    }
+
+    public boolean isClosed() {
+        return isClosed;
     }
 }

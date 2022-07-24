@@ -10,8 +10,10 @@ import java.util.function.Consumer;
 
 public class TextInterface {
 
-    private String title;
+    private String title = "";
     private String placeholder = "";
+
+    private String inputName = "Input";
     private final SignMenuFactory factory = new SignMenuFactory(UserInterface.getInstance());
 
     public TextInterface title(String title) {
@@ -24,10 +26,15 @@ public class TextInterface {
         return this;
     }
 
+    public TextInterface inputName(String inputName) {
+        this.inputName = inputName;
+        return this;
+    }
+
     public void getInput(Player player, Consumer<String> response) {
         if (title == null) throw new IllegalStateException("Title is null! You must set title to use this class");
         if (FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId())) {
-            CustomForm form = CustomForm.builder().title(title).input("Input", placeholder).responseHandler((string) -> response.accept(string.substring(2, string.length() - 3))).build();
+            CustomForm form = CustomForm.builder().title(title).input(inputName, placeholder).responseHandler((string) -> response.accept(string.substring(2, string.length() - 3))).build();
             FloodgateApi.getInstance().sendForm(player.getUniqueId(), form);
         }
         else {
