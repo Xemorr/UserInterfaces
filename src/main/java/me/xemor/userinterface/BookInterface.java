@@ -42,11 +42,13 @@ public class BookInterface {
         return this;
     }
 
-    public BookInterface button(String buttonName, Runnable runnable) { return button(buttonName, runnable, ""); }
+    public BookInterface button(String buttonName, Runnable runnable) { return button(buttonName, runnable, "", ""); }
 
-    public BookInterface button(String buttonName, Runnable runnable, String iconURL) {
+    public BookInterface button(String buttonName, Runnable runnable, String hoverText) { return button(buttonName, runnable, hoverText, ""); }
+
+    public BookInterface button(String buttonName, Runnable runnable, String hoverText, String iconURL) {
         String identifier = createRandomIdentifier();
-        Button button = new Button(identifier, runnable, buttonName, iconURL);
+        Button button = new Button(identifier, runnable, buttonName, hoverText, iconURL);
         buttons.add(button);
         BookInterfaceCmd.addButton(identifier, button);
         return this;
@@ -88,7 +90,7 @@ public class BookInterface {
         bedrockForm = formBuilder.build();
     }
 
-    public record Button(String identifier, Runnable runnable, String name, String iconURL) {}
+    public record Button(String identifier, Runnable runnable, String name, String hoverText, String iconURL) {}
 
     private String createRandomIdentifier() {
         String randomUUID = UUID.randomUUID().toString();
