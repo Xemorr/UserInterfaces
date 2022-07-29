@@ -42,9 +42,9 @@ public class BookInterface {
         return this;
     }
 
-    public void button(Runnable runnable, String buttonName) { button(runnable, buttonName, ""); }
+    public void button(String buttonName, Runnable runnable) { button(buttonName, runnable, ""); }
 
-    public void button(Runnable runnable, String buttonName, String iconURL) {
+    public void button(String buttonName, Runnable runnable, String iconURL) {
         String identifier = createRandomIdentifier();
         Button button = new Button(identifier, runnable, buttonName, iconURL);
         buttons.add(button);
