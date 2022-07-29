@@ -1,5 +1,6 @@
 package me.xemor.userinterface;
 
+import me.xemor.userinterface.commands.BookInterfaceCmd;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -21,7 +22,7 @@ public final class UserInterface extends JavaPlugin {
             hasFloodgate = false;
             getLogger().info("Floodgate plugin not found. Continuing without Floodgate.");
         }
-
+        this.getCommand("ufbook").setExecutor(new BookInterfaceCmd());
         this.getServer().getPluginManager().registerEvents(chestHandler, this);
     }
 
