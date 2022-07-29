@@ -6,3 +6,7 @@ authors: [ Xemor_ ]
 depend: [ProtocolLib]
 soft-depend: [floodgate]
 description: Allows you to add Bedrock-Java cross compatible GUIs
+commands:
+  ufbook:
+    description: UFBook
+    usage: /ufbook
