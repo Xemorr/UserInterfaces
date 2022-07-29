@@ -42,13 +42,14 @@ public class BookInterface {
         return this;
     }
 
-    public void button(String buttonName, Runnable runnable) { button(buttonName, runnable, ""); }
+    public BookInterface button(String buttonName, Runnable runnable) { return button(buttonName, runnable, ""); }
 
-    public void button(String buttonName, Runnable runnable, String iconURL) {
+    public BookInterface button(String buttonName, Runnable runnable, String iconURL) {
         String identifier = createRandomIdentifier();
         Button button = new Button(identifier, runnable, buttonName, iconURL);
         buttons.add(button);
         BookInterfaceCmd.addButton(identifier, button);
+        return this;
     }
 
     public void open(Player player) {
