@@ -65,6 +65,10 @@ public class BookInterfaceCmd implements CommandExecutor {
         }
     }
 
+    public static void removeButton(String identifier) {
+        buttons.remove(identifier);
+    }
+
     public static boolean hasButtonIdentifier(String identifier) {
         return buttons.containsKey(identifier);
     }

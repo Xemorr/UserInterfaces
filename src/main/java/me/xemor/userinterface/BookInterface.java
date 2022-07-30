@@ -90,6 +90,8 @@ public class BookInterface {
         bedrockForm = formBuilder.build();
     }
 
+    public void unload() { for (Button button : buttons) BookInterfaceCmd.removeButton(button.identifier); }
+
     public record Button(String identifier, Runnable runnable, String name, String hoverText, String iconURL) {}
 
     private String createRandomIdentifier() {
