@@ -27,12 +27,12 @@ public class BookInterface {
 
     private SimpleForm bedrockForm = null;
 
-    public BookInterface title(String formTitle) {
-        this.formTitle = formTitle;
+    public BookInterface title(String title) {
+        this.formTitle = title;
         return this;
     }
 
-    public BookInterface content(String title) {
+    public BookInterface content(String content) {
         this.content = content;
         return this;
     }
@@ -68,8 +68,9 @@ public class BookInterface {
     }
 
     private Book createJavaBook(Player player) {
-        TextComponent.Builder page = Component.text().append(Component.text(content + "\n\n"));
-        for (Button button : buttons) page.append(Component.text(button.name.replaceAll("%bullet%", bullet) + "\n").clickEvent(ClickEvent.runCommand("/ufbook " + player.getUniqueId() + " " + button.identifier)));
+        TextComponent.Builder page = Component.text()
+            .append(Component.text(content + "\n"));
+        for (Button button : buttons) page.append(Component.text(button.name.replaceAll("%bullet%", bullet) + "\n").clickEvent(ClickEvent.runCommand("/ufbook " + player.getUniqueId() + " " + button.identifier)).hoverEvent(Component.text(button.hoverText)));
         Collection<Component> pages = new ArrayList<>();
         pages.add(page.build());
         return Book.book(Component.text("UFBook"), Component.text("Dav_e_"), pages);

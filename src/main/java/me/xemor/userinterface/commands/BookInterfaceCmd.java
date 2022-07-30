@@ -26,12 +26,10 @@ public class BookInterfaceCmd implements CommandExecutor {
         }
         String uuidInput = args[0];
         String cmdIdentifier = args[1];
-
         if (!uuidInput.equals(player.getUniqueId().toString())) return true;
         BookInterface.Button thisButton = buttons.get(cmdIdentifier);
         if (thisButton == null) return true;
         thisButton.runnable().run();
-
         return true;
     }
 
