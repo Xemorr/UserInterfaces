@@ -3,6 +3,7 @@ package me.xemor.userinterface;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
@@ -18,9 +19,11 @@ public class ChestHandler implements Listener {
         if (e.getClickedInventory() == null) return;
         if (e.getClickedInventory().getHolder() instanceof InventoryInteractions) {
             InventoryInteractions<?> inventoryInterface = (InventoryInteractions<?>) inventory.getHolder();
+            e.setCancelled(true);
             if (e.getWhoClicked() instanceof Player) {
                 inventoryInterface.interact(clickedItem, (Player) e.getWhoClicked(), e.getClick());
             }
+        } else if (e.getWhoClicked().getOpenInventory().getTopInventory().getHolder() instanceof InventoryInteractions) {
             e.setCancelled(true);
         }
     }
@@ -30,7 +33,7 @@ public class ChestHandler implements Listener {
         Inventory inventory = e.getInventory();
         if (inventory.getHolder() instanceof InventoryInteractions) {
             InventoryInteractions<?> inventoryInteractions = (InventoryInteractions<?>) inventory.getHolder();
-            if (inventoryInteractions.isClosed()) {
+            if (!inventoryInteractions.isClosed()) {
                 if (e.getPlayer() instanceof Player) {
                     inventoryInteractions.closed((Player) e.getPlayer());
                 }

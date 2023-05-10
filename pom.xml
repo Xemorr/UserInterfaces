@@ -6,7 +6,7 @@
 
     <groupId>me.xemor</groupId>
     <artifactId>UserInterface</artifactId>
-    <version>1.6.5-SNAPSHOT</version>
+    <version>1.6.6-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>UserInterface</name>

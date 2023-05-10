@@ -6,6 +6,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -13,11 +14,12 @@ import java.util.function.Predicate;
 
 public class InventoryInteractions<T> implements InventoryHolder {
 
+    @Nullable
     private Consumer<Player> closeInteraction;
-    private Map<Predicate<ItemStack>, Interaction> map = new HashMap<>();
+    private final Map<Predicate<ItemStack>, Interaction> map = new HashMap<>();
     private Inventory inventory;
     private boolean isClosed;
-    private T data;
+    private final T data;
 
     public InventoryInteractions(T data) {
         this.data = data;
@@ -41,7 +43,9 @@ public class InventoryInteractions<T> implements InventoryHolder {
 
     public void closed(Player player) {
         isClosed = true;
-        closeInteraction.accept(player);
+        if (closeInteraction != null) {
+            closeInteraction.accept(player);
+        }
     }
 
     public void addInteraction(Predicate<ItemStack> predicate, Interaction interaction) {
