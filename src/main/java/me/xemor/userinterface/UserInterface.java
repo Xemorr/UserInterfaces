@@ -4,6 +4,7 @@ import me.xemor.userinterface.commands.BookInterfaceCmd;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.plugin.java.JavaPlugin;
 
+@SuppressWarnings("unused")
 public final class UserInterface {
     private static JavaPlugin plugin;
     private static BukkitAudiences bukkitAudiences;

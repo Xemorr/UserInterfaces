@@ -21,6 +21,7 @@ import java.util.Objects;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("unused")
 public final class SignMenuFactory {
 
     private final Plugin plugin;

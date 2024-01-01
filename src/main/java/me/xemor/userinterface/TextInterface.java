@@ -8,6 +8,7 @@ import org.geysermc.floodgate.api.FloodgateApi;
 import java.util.Arrays;
 import java.util.function.Consumer;
 
+@SuppressWarnings("unused")
 public class TextInterface {
 
     private String title = "";
