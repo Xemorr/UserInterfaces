@@ -16,6 +16,7 @@ import java.util.Map;
  * /       _
  * """
  */
+@SuppressWarnings("unused")
 public class ChestInterface<T> {
 
     private final Inventory inventory;

@@ -20,15 +20,24 @@ public class BookInterfaceCmd implements CommandExecutor {
             commandSender.sendMessage("Console cannot run this command!");
             return true;
         }
-        if (args.length != 2) {
+
+        if (args.length != 3) {
             commandSender.sendMessage("An error has occurred!");
             return true;
         }
-        String uuidInput = args[0];
-        String cmdIdentifier = args[1];
-        if (!uuidInput.equals(player.getUniqueId().toString())) return true;
+
+        String pluginName = args[0];
+        String uuidInput = args[1];
+        String cmdIdentifier = args[2];
+        if (UserInterface.getPlugin().getName().equalsIgnoreCase(pluginName) || !uuidInput.equals(player.getUniqueId().toString())) {
+            return true;
+        }
+
         BookInterface.Button thisButton = buttons.get(cmdIdentifier);
-        if (thisButton == null) return true;
+        if (thisButton == null) {
+            return true;
+        }
+
         thisButton.runnable().run();
         return true;
     }
@@ -36,30 +45,9 @@ public class BookInterfaceCmd implements CommandExecutor {
     public static void addButton(String identifier, BookInterface.Button button) {
         buttons.put(identifier, button);
         if (buttons.size() > 500) {
-            String warning =
-                """
-                        ERROR ///////////////////////////////////////////////////////////////////////////////////////////////
-                        ERROR //                                                                                           //
-                        ERROR //                                          ______                                           //
-                        ERROR //                                         //    \\\\                                          //
-                        ERROR //                                        //      \\\\                                         //
-                        ERROR //                                       //   ___  \\\\                                        //
-                        ERROR //                                      //   |   |  \\\\                                       //
-                        ERROR //                                     //    |   |   \\\\                                      //
-                        ERROR //                                    //     |   |    \\\\                                     //
-                        ERROR //                                   //      |   |     \\\\                                    //
-                        ERROR //                                  //       |___|      \\\\                                   //
-                        ERROR //                                 //         ___        \\\\                                  //
-                        ERROR //                                //         |   |        \\\\                                 //
-                        ERROR //                               //          |___|         \\\\                                //
-                        ERROR //                              //                          \\\\                               //
-                        ERROR //                             ////////////////////////////////                              //
-                        ERROR //                                                                                           //
-                        ERROR //       BUTTONS HAVE EXCEEDED 500, THIS IS LIKELY DUE TO MASS BookInterface CREATION        //
-                        ERROR //                                                                                           //
-                        ERROR ///////////////////////////////////////////////////////////////////////////////////////////////
-                    """;
-            UserInterface.getInstance().getLogger().severe(warning);
+            for (int i = 0; i < 10; i++) {
+                UserInterface.getPlugin().getLogger().severe("UserInterface Buttons have exceeded 500, this is likely due to mass BookInterface creation");
+            }
         }
     }
 
