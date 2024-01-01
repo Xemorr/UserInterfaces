@@ -16,12 +16,7 @@ public final class UserInterface {
         bukkitAudiences = BukkitAudiences.create(plugin);
         ChestHandler chestHandler = new ChestHandler();
 
-        if (plugin.getServer().getPluginManager().getPlugin("Floodgate") != null) {
-            hasFloodgate = true;
-            plugin.getLogger().info("Floodgate plugin found. Enabling Floodgate support.");
-        } else {
-            hasFloodgate = false;
-        }
+        hasFloodgate = plugin.getServer().getPluginManager().getPlugin("Floodgate") != null;
 
         plugin.getCommand("ufbook").setExecutor(new BookInterfaceCmd());
         plugin.getServer().getPluginManager().registerEvents(chestHandler, plugin);
