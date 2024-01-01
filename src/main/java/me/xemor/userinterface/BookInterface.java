@@ -70,7 +70,7 @@ public class BookInterface {
     private Book createJavaBook(Player player) {
         TextComponent.Builder page = Component.text()
             .append(Component.text(content + "\n"));
-        for (Button button : buttons) page.append(Component.text(button.name.replaceAll("%bullet%", bullet) + "\n").clickEvent(ClickEvent.runCommand("/ufbook " + player.getUniqueId() + " " + button.identifier)).hoverEvent(Component.text(button.hoverText)));
+        for (Button button : buttons) page.append(Component.text(button.name.replaceAll("%bullet%", bullet) + "\n").clickEvent(ClickEvent.runCommand("/ufbook " + UserInterface.getPlugin().getName().toLowerCase() + " "  + player.getUniqueId() + " " + button.identifier)).hoverEvent(Component.text(button.hoverText)));
         Collection<Component> pages = new ArrayList<>();
         pages.add(page.build());
         return Book.book(Component.text("UFBook"), Component.text("Dav_e_"), pages);

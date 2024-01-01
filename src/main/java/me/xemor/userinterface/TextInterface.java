@@ -14,7 +14,7 @@ public class TextInterface {
     private String placeholder = "";
 
     private String inputName = "Input";
-    private final SignMenuFactory factory = new SignMenuFactory(UserInterface.getInstance());
+    private final SignMenuFactory factory = new SignMenuFactory(UserInterface.getPlugin());
 
     public TextInterface title(String title) {
         this.title = title;
