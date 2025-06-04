@@ -1,9 +1,8 @@
-package me.xemor.userinterface;
+package me.xemor.userinterface.textinterface;
 
 import me.xemor.userinterface.SignMenuFactory.SignMenuFactory;
+import me.xemor.userinterface.UserInterface;
 import org.bukkit.entity.Player;
-import org.geysermc.cumulus.CustomForm;
-import org.geysermc.floodgate.api.FloodgateApi;
 
 import java.util.Arrays;
 import java.util.function.Consumer;
@@ -13,9 +12,15 @@ public class TextInterface {
 
     private String title = "";
     private String placeholder = "";
-
     private String inputName = "Input";
+
     private final SignMenuFactory factory = new SignMenuFactory(UserInterface.getPlugin());
+
+    public TextInterface() {
+        if (!UserInterface.hasProtocolLib()) {
+            throw new IllegalStateException("Protocol Lib is needed for TextInterface to work");
+        }
+    }
 
     public TextInterface title(String title) {
         this.title = title;
@@ -32,12 +37,21 @@ public class TextInterface {
         return this;
     }
 
+    protected String getTitle() {
+        return title;
+    }
+
+    protected String getPlaceholder() {
+        return placeholder;
+    }
+
+    protected String getInputName() {
+        return inputName;
+    }
+
     public void getInput(Player player, Consumer<String> response) {
         if (title == null) throw new IllegalStateException("Title is null! You must set a title to use this class");
-        if (UserInterface.hasFloodgate() && FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId())) {
-            CustomForm form = CustomForm.builder().title(title).input(inputName, placeholder).responseHandler((string) -> response.accept(string.substring(2, string.length() - 3))).build();
-            FloodgateApi.getInstance().sendForm(player.getUniqueId(), form);
-        }
+        if (UserInterface.hasFloodgate() && FloodgateGetInputTextInterface.hackSoItDoesntCrash(player, this, response)) {}
         else {
             SignMenuFactory.Menu menu = factory.newMenu(Arrays.asList("", "^^^^^^^^^^^", title, ""));
             menu.reopenIfFail(true).response((ignored, output) -> {response.accept(output[0]); return true;});

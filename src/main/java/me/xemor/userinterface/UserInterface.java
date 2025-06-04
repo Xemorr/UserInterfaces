@@ -1,7 +1,6 @@
 package me.xemor.userinterface;
 
 import me.xemor.userinterface.commands.BookInterfaceCmd;
-import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
@@ -12,20 +11,16 @@ import java.lang.reflect.Field;
 @SuppressWarnings("unused")
 public final class UserInterface {
     private static JavaPlugin plugin;
-    private static BukkitAudiences bukkitAudiences;
     private static boolean hasFloodgate;
+    private static boolean hasProtocolLib;
 
     public static void enable(JavaPlugin plugin) {
         UserInterface.plugin = plugin;
 
-        if (plugin.getServer().getPluginManager().getPlugin("ProtocolLib") == null) {
-            throw new IllegalStateException(plugin.getName() + " requires ProtocolLib to run.");
-        }
-
-        bukkitAudiences = BukkitAudiences.create(plugin);
         ChestHandler chestHandler = new ChestHandler();
 
         hasFloodgate = plugin.getServer().getPluginManager().getPlugin("Floodgate") != null;
+        hasProtocolLib = plugin.getServer().getPluginManager().getPlugin("ProtocolLib") != null;
 
         registerCommand("ufbook", new BookInterfaceCmd("ufbook"));
         plugin.getServer().getPluginManager().registerEvents(chestHandler, plugin);
@@ -35,12 +30,12 @@ public final class UserInterface {
         return plugin;
     }
 
-    public static BukkitAudiences getBukkitAudiences() {
-        return bukkitAudiences;
-    }
-
     public static boolean hasFloodgate() {
         return hasFloodgate;
+    }
+
+    public static boolean hasProtocolLib() {
+        return hasProtocolLib;
     }
 
     private static void registerCommand(String name, Command command) {

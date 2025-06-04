@@ -55,14 +55,13 @@ public class BookInterface {
         return this;
     }
 
-    public void open(Player player) {
+    public void open(Player player, Audience audience) {
         if (UserInterface.hasFloodgate() && FloodgateApi.getInstance().isFloodgatePlayer(player.getUniqueId())) {
             if (bedrockForm == null) updateBedrockForm();
             FloodgateApi.getInstance().sendForm(player.getUniqueId(), bedrockForm);
         }
         else {
             Book book = createJavaBook(player);
-            Audience audience = UserInterface.getBukkitAudiences().sender(player);
             audience.openBook(book);
             player.playSound(player.getLocation(), Sound.ITEM_BOOK_PAGE_TURN, 1f, 1f);
         }

@@ -16,8 +16,7 @@ public class ChestHandler implements Listener {
         ItemStack clickedItem = e.getCurrentItem();
         Inventory inventory = e.getInventory();
         if (e.getClickedInventory() == null) return;
-        if (e.getClickedInventory().getHolder() instanceof InventoryInteractions) {
-            InventoryInteractions<?> inventoryInterface = (InventoryInteractions<?>) inventory.getHolder();
+        if (e.getClickedInventory().getHolder() instanceof InventoryInteractions<?> inventoryInterface) {
             e.setCancelled(true);
             if (e.getWhoClicked() instanceof Player) {
                 inventoryInterface.interact(clickedItem, (Player) e.getWhoClicked(), e.getClick());
@@ -30,8 +29,7 @@ public class ChestHandler implements Listener {
     @EventHandler
     public void onClose(InventoryCloseEvent e) {
         Inventory inventory = e.getInventory();
-        if (inventory.getHolder() instanceof InventoryInteractions) {
-            InventoryInteractions<?> inventoryInteractions = (InventoryInteractions<?>) inventory.getHolder();
+        if (inventory.getHolder() instanceof InventoryInteractions<?> inventoryInteractions) {
             if (!inventoryInteractions.isClosed()) {
                 if (e.getPlayer() instanceof Player) {
                     inventoryInteractions.closed((Player) e.getPlayer());
