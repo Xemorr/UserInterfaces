@@ -89,7 +89,7 @@ public class ChestInterface<T> {
                 );
             }
         });
-        chestInterface.calculateInventoryContents(config.layout(), config.key());
+        chestInterface.calculateInventoryContents(config.layout(), config.buttons());
         return chestInterface;
     }
 
