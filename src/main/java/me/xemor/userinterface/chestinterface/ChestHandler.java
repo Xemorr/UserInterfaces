@@ -1,4 +1,4 @@
-package me.xemor.userinterface;
+package me.xemor.userinterface.chestinterface;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,7 +14,6 @@ public class ChestHandler implements Listener {
     @EventHandler
     public void onClick(InventoryClickEvent e) {
         ItemStack clickedItem = e.getCurrentItem();
-        Inventory inventory = e.getInventory();
         if (e.getClickedInventory() == null) return;
         if (e.getClickedInventory().getHolder() instanceof InventoryInteractions<?> inventoryInterface) {
             e.setCancelled(true);
