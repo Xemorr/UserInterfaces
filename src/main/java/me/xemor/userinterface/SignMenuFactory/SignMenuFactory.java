@@ -22,7 +22,7 @@ public final class SignMenuFactory {
         this.plugin = plugin;
         this.inputs = new HashMap<>();
 
-        UserInterface.getPacketHandler().registerSignMenuListener(this);
+        UserInterface.getPacketHandler().ifPresent(packetHandler -> packetHandler.registerSignMenuListener(this));
     }
 
     public Plugin getPlugin() {
@@ -86,7 +86,7 @@ public final class SignMenuFactory {
             String[] signLines = text.stream().map(this::color).toArray(String[]::new);
             player.sendSignChange(location, signLines);
 
-            UserInterface.getPacketHandler().sendUpdateSignPacket(player, location, signLines, true);
+            UserInterface.getPacketHandler().ifPresent(packetHandler -> packetHandler.sendUpdateSignPacket(player, location, signLines, true));
             inputs.put(player, this);
         }
 

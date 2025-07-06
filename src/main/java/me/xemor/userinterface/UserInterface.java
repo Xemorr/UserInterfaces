@@ -10,6 +10,7 @@ import org.bukkit.command.CommandMap;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
+import java.util.Optional;
 
 @SuppressWarnings("unused")
 public final class UserInterface {
@@ -40,8 +41,8 @@ public final class UserInterface {
         return hasFloodgate;
     }
 
-    public static PacketHandler getPacketHandler() {
-        return packetHandler;
+    public static Optional<PacketHandler> getPacketHandler() {
+        return Optional.ofNullable(packetHandler);
     }
 
     public static NamespacedKey getSlotNameKey() {
