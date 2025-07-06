@@ -83,7 +83,7 @@ public final class SignMenuFactory {
             location.setY(location.getBlockY() - 4);
 
             player.sendBlockChange(location, Material.OAK_SIGN.createBlockData());
-            String[] signLines = text.stream().map(this::color).toList().toArray(new String[4]);
+            String[] signLines = text.stream().map(this::color).toArray(String[]::new);
             player.sendSignChange(location, signLines);
 
             UserInterface.getPacketHandler().sendUpdateSignPacket(player, location, signLines, true);
