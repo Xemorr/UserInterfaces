@@ -17,7 +17,7 @@ public class TextInterface {
     private final SignMenuFactory factory = new SignMenuFactory(UserInterface.getPlugin());
 
     public TextInterface() {
-        if (!UserInterface.getPacketHandler().hasHook()) {
+        if (UserInterface.getPacketHandler() == null) {
             throw new IllegalStateException("packetevents or ProtocolLib is required to use this feature");
         }
     }

@@ -19,27 +19,15 @@ public class PacketHandler {
         } else if (pluginManager.getPlugin("ProtocolLib") != null) {
             this.hook = new ProtocolLibHook();
         } else {
-            this.hook = null;
-        }
-    }
-
-    public boolean hasHook() {
-        return this.hook != null;
-    }
-
-    public void assertHook() {
-        if (this.hasHook()) {
             throw new IllegalStateException("packetevents or ProtocolLib is required to use this feature");
         }
     }
 
     public void sendUpdateSignPacket(Player player, Location location, String[] signLines, boolean isFrontText) {
-        assertHook();
         this.hook.sendUpdateSignPacket(player, location, signLines, isFrontText);
     }
 
     public void registerSignMenuListener(SignMenuFactory factory) {
-        assertHook();
         this.hook.registerSignMenuListener(factory);
     }
 }
