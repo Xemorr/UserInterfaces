@@ -1,11 +1,10 @@
 package me.xemor.userinterface.SignMenuFactory;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.ProtocolLibrary;
-import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketContainer;
-import com.comphenix.protocol.events.PacketEvent;
-import com.comphenix.protocol.wrappers.BlockPosition;
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.event.*;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.util.Vector3i;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientUpdateSign;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -13,13 +12,11 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.BiPredicate;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("unused")
 public final class SignMenuFactory {
@@ -39,19 +36,23 @@ public final class SignMenuFactory {
     }
 
     private void listen() {
-        ProtocolLibrary.getProtocolManager().addPacketListener(new PacketAdapter(this.plugin, PacketType.Play.Client.UPDATE_SIGN) {
+        PacketEvents.getAPI().getEventManager().registerListener(new PacketListenerAbstract() {
+
             @Override
-            public void onPacketReceiving(PacketEvent event) {
-                Player player = event.getPlayer();
+            public void onPacketReceive(PacketReceiveEvent event) {
+                if (event.getPacketType() != PacketType.Play.Server.UPDATE_SIGN) {
+                    return;
+                }
 
+                Player player = (Player) event.getPlayer();
                 Menu menu = inputs.remove(player);
-
                 if (menu == null) {
                     return;
                 }
-                event.setCancelled(true);
 
-                boolean success = menu.response.test(player, event.getPacket().getStringArrays().read(0));
+                WrapperPlayClientUpdateSign packet = new WrapperPlayClientUpdateSign(event);
+                event.setCancelled(true);
+                boolean success = menu.response.test(player, packet.getTextLines());
 
                 if (!success && menu.reopenIfFail && !menu.forceClose) {
                     Bukkit.getScheduler().runTaskLater(plugin, () -> menu.open(player), 2L);
@@ -59,6 +60,7 @@ public final class SignMenuFactory {
                 Bukkit.getScheduler().runTaskLater(plugin, () -> {
                     if (player.isOnline()) {
                         player.sendBlockChange(menu.location, menu.location.getBlock().getBlockData());
+                        PacketEvents.getAPI().getEventManager().unregisterListener(this);
                     }
                 }, 2L);
             }
@@ -99,20 +101,13 @@ public final class SignMenuFactory {
             location.setY(location.getBlockY() - 4);
 
             player.sendBlockChange(location, Material.OAK_SIGN.createBlockData());
-            player.sendSignChange(
-                    location,
-                    text.stream().map(this::color).collect(Collectors.toList()).toArray(new String[4])
-            );
+            String[] signLines = text.stream().map(this::color).toList().toArray(new String[4]);
+            player.sendSignChange(location, signLines);
 
-            PacketContainer openSign = ProtocolLibrary.getProtocolManager().createPacket(PacketType.Play.Server.OPEN_SIGN_EDITOR);
-            BlockPosition position = new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ());
-            openSign.getBlockPositionModifier().write(0, position);
-            try {
-                ProtocolLibrary.getProtocolManager().sendServerPacket(player, openSign);
-            } catch (InvocationTargetException exception) {
-                exception.printStackTrace();
-            }
+            Vector3i position = new Vector3i(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+            WrapperPlayClientUpdateSign packet = new WrapperPlayClientUpdateSign(position, signLines, true);
 
+            PacketEvents.getAPI().getPlayerManager().sendPacket(player, packet);
             inputs.put(player, this);
         }
 
