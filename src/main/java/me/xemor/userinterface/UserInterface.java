@@ -2,6 +2,7 @@ package me.xemor.userinterface;
 
 import me.xemor.userinterface.chestinterface.ChestHandler;
 import me.xemor.userinterface.commands.BookInterfaceCmd;
+import me.xemor.userinterface.packethandler.PacketHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.Command;
@@ -14,7 +15,7 @@ import java.lang.reflect.Field;
 public final class UserInterface {
     private static JavaPlugin plugin;
     private static boolean hasFloodgate;
-    private static boolean hasProtocolLib;
+    private static PacketHandler packetHandler;
     private static NamespacedKey slotName;
 
     public static void enable(JavaPlugin plugin) {
@@ -23,8 +24,8 @@ public final class UserInterface {
         ChestHandler chestHandler = new ChestHandler();
 
         hasFloodgate = plugin.getServer().getPluginManager().getPlugin("Floodgate") != null;
-        hasProtocolLib = plugin.getServer().getPluginManager().getPlugin("ProtocolLib") != null;
 
+        packetHandler = new PacketHandler();
         slotName = new NamespacedKey(UserInterface.getPlugin(), "slotName");
 
         registerCommand("ufbook", new BookInterfaceCmd("ufbook"));
@@ -39,8 +40,8 @@ public final class UserInterface {
         return hasFloodgate;
     }
 
-    public static boolean hasProtocolLib() {
-        return hasProtocolLib;
+    public static PacketHandler getPacketHandler() {
+        return packetHandler;
     }
 
     public static NamespacedKey getSlotNameKey() {

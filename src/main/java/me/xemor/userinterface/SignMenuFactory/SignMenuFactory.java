@@ -1,11 +1,6 @@
 package me.xemor.userinterface.SignMenuFactory;
 
-import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.event.*;
-import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.util.Vector3i;
-import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientUpdateSign;
-import org.bukkit.Bukkit;
+import me.xemor.userinterface.UserInterface;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,71 +15,58 @@ import java.util.function.BiPredicate;
 
 @SuppressWarnings("unused")
 public final class SignMenuFactory {
-
     private final Plugin plugin;
-
     private final Map<Player, Menu> inputs;
 
     public SignMenuFactory(Plugin plugin) {
         this.plugin = plugin;
         this.inputs = new HashMap<>();
-        this.listen();
+
+        UserInterface.getPacketHandler().registerSignMenuListener(this);
+    }
+
+    public Plugin getPlugin() {
+        return plugin;
+    }
+
+    public Map<Player, Menu> getInputs() {
+        return inputs;
     }
 
     public Menu newMenu(List<String> text) {
         return new Menu(text);
     }
 
-    private void listen() {
-        PacketEvents.getAPI().getEventManager().registerListener(new PacketListenerAbstract() {
-
-            @Override
-            public void onPacketReceive(PacketReceiveEvent event) {
-                if (event.getPacketType() != PacketType.Play.Server.UPDATE_SIGN) {
-                    return;
-                }
-
-                Player player = (Player) event.getPlayer();
-                Menu menu = inputs.remove(player);
-                if (menu == null) {
-                    return;
-                }
-
-                WrapperPlayClientUpdateSign packet = new WrapperPlayClientUpdateSign(event);
-                event.setCancelled(true);
-                boolean success = menu.response.test(player, packet.getTextLines());
-
-                if (!success && menu.reopenIfFail && !menu.forceClose) {
-                    Bukkit.getScheduler().runTaskLater(plugin, () -> menu.open(player), 2L);
-                }
-                Bukkit.getScheduler().runTaskLater(plugin, () -> {
-                    if (player.isOnline()) {
-                        player.sendBlockChange(menu.location, menu.location.getBlock().getBlockData());
-                        PacketEvents.getAPI().getEventManager().unregisterListener(this);
-                    }
-                }, 2L);
-            }
-        });
-    }
-
     public final class Menu {
-
         private final List<String> text;
-
         private BiPredicate<Player, String[]> response;
         private boolean reopenIfFail;
-
         private Location location;
-
         private boolean forceClose;
 
         Menu(List<String> text) {
             this.text = text;
         }
 
+        public boolean shouldReopenIfFail() {
+            return reopenIfFail;
+        }
+
+        public Location getLocation() {
+            return location;
+        }
+
+        public boolean shouldForceClose() {
+            return forceClose;
+        }
+
         public Menu reopenIfFail(boolean value) {
             this.reopenIfFail = value;
             return this;
+        }
+
+        public boolean testResponse(Player player, String[] text) {
+            return this.response.test(player, text);
         }
 
         public Menu response(BiPredicate<Player, String[]> response) {
@@ -104,10 +86,7 @@ public final class SignMenuFactory {
             String[] signLines = text.stream().map(this::color).toList().toArray(new String[4]);
             player.sendSignChange(location, signLines);
 
-            Vector3i position = new Vector3i(location.getBlockX(), location.getBlockY(), location.getBlockZ());
-            WrapperPlayClientUpdateSign packet = new WrapperPlayClientUpdateSign(position, signLines, true);
-
-            PacketEvents.getAPI().getPlayerManager().sendPacket(player, packet);
+            UserInterface.getPacketHandler().sendUpdateSignPacket(player, location, signLines, true);
             inputs.put(player, this);
         }
 
