@@ -1,10 +1,12 @@
-package me.xemor.userinterface;
+package me.xemor.userinterface.chestinterface;
 
+import me.xemor.userinterface.UserInterface;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,12 +51,24 @@ public class InventoryInteractions<T> implements InventoryHolder {
         }
     }
 
-    public void addInteraction(Predicate<ItemStack> predicate, Interaction interaction) {
-        map.put(predicate, interaction);
+    public void addItemInteraction(Predicate<ItemStack> itemStackPredicate, Interaction interaction) {
+        map.put(itemStackPredicate, interaction);
     }
 
-    public void addSimpleInteraction(ItemStack item, Consumer<Player> consumer) {
+    public void addItemSimpleInteraction(ItemStack item, Consumer<Player> consumer) {
         map.put(item::equals,
+                (player, otherItem, clickType) ->  {
+                    if (clickType == ClickType.LEFT || clickType == ClickType.RIGHT) consumer.accept(player);
+                }
+        );
+    }
+
+    public void addSlotInteraction(Predicate<Character> slotPredicate, Interaction interaction) {
+        map.put((item) -> slotPredicate.test(item.getItemMeta().getPersistentDataContainer().get(UserInterface.getSlotNameKey(), PersistentDataType.STRING).charAt(0)), interaction);
+    }
+
+    public void addSlotSimpleInteraction(char slot, Consumer<Player> consumer) {
+        map.put((item) -> slot == item.getItemMeta().getPersistentDataContainer().get(UserInterface.getSlotNameKey(), PersistentDataType.STRING).charAt(0),
                 (player, otherItem, clickType) ->  {
                     if (clickType == ClickType.LEFT || clickType == ClickType.RIGHT) consumer.accept(player);
                 }
