@@ -55,10 +55,6 @@ public class ProtocolLibHook implements PacketHook {
     }
 
     private void sendPacket(Player player, PacketContainer packet) {
-        try {
-            ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
-        } catch (InvocationTargetException exception) {
-            exception.printStackTrace();
-        }
+        ProtocolLibrary.getProtocolManager().sendServerPacket(player, packet);
     }
 }

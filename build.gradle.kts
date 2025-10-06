@@ -22,7 +22,7 @@ repositories {
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.21-R0.1-SNAPSHOT")
     compileOnly("com.github.retrooper:packetevents-spigot:2.8.0-SNAPSHOT")
-    compileOnly("com.comphenix.protocol:ProtocolLib:4.8.0")
+    compileOnly("net.dmulloy2:ProtocolLib:5.4.0")
     compileOnly("org.geysermc.geyser:api:2.2.0-SNAPSHOT")
     compileOnly("org.geysermc.floodgate:api:2.2.2-SNAPSHOT")
     compileOnly("net.kyori:adventure-api:4.21.0")
