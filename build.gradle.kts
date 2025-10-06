@@ -1,5 +1,5 @@
 group = "me.xemor"
-version = "3.0.1-SNAPSHOT"
+version = "3.0.2-SNAPSHOT"
 description = "userinterfaces"
 java.sourceCompatibility = JavaVersion.VERSION_17
 

@@ -38,7 +38,9 @@ public class ChestInterface<T> {
     public void calculateInventoryContents(String[] layout, Map<Character, ItemStack> key) {
         for (int i = 0; i < layout.length * 9; i++) {
             char character = layout[i / 9].charAt(i % 9);
-            ItemStack itemStack = key.getOrDefault(character, new ItemStack(Material.AIR));
+            ItemStack itemStack = key.get(character);
+            if (itemStack == null || itemStack.getType().isAir()) continue;
+
             ItemMeta itemMeta = itemStack.getItemMeta();
             itemMeta.getPersistentDataContainer().set(UserInterface.getSlotNameKey(), PersistentDataType.STRING, character + "");
             inventory.setItem(i, itemStack);
