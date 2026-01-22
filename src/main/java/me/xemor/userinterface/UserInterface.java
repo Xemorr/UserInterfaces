@@ -26,7 +26,6 @@ public final class UserInterface {
 
         hasFloodgate = plugin.getServer().getPluginManager().getPlugin("Floodgate") != null;
 
-        packetHandler = new PacketHandler();
         slotName = new NamespacedKey(UserInterface.getPlugin(), "slotName");
 
         registerCommand("ufbook", new BookInterfaceCmd("ufbook"));
@@ -42,6 +41,10 @@ public final class UserInterface {
     }
 
     public static Optional<PacketHandler> getPacketHandler() {
+        if (packetHandler == null) {
+            packetHandler = new PacketHandler();
+        }
+
         return Optional.ofNullable(packetHandler);
     }
 
